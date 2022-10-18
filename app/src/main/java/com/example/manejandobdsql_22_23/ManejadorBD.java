@@ -19,6 +19,9 @@ public class ManejadorBD extends SQLiteOpenHelper {
     public ManejadorBD(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
+    public ManejadorBD(Context context){
+        super(context, DATABASE_NAME, null, 1);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
