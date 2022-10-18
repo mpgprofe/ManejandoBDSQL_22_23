@@ -1,7 +1,9 @@
 package com.example.manejandobdsql_22_23;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -88,6 +90,39 @@ public class MainActivity extends AppCompatActivity {
                 boolean resultado = manejadorBD.actualizar(editTextId.getText().toString(), editTextModelo.getText().toString(), editTextMarca.getText().toString(), editTextPrecio.getText().toString());
                 Toast.makeText(MainActivity.this, resultado?"Modificado correctamente":"No se ha modificado nada", Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        buttonBorrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+
+                builder.setMessage("Deseas Borrar este móvil "+editTextModelo.getText().toString()+"?");
+                builder.setCancelable(false);
+                builder.setNegativeButton("No borrar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(MainActivity.this, "No se ha borrado", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        boolean borrado = manejadorBD.borrar(editTextId.getText().toString());
+                        Toast.makeText(MainActivity.this, borrado?"Borrado correctamente":"Nada a borrar", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                //Setting the title manually
+                alert.setTitle("¡ ATENCIÓN !");
+                alert.show();
+
+
+                //boolean borrado = manejadorBD.borrar(editTextId.getText().toString());
+                //Toast.makeText(MainActivity.this, borrado?"Borrado correctamente":"Nada a borrar", Toast.LENGTH_SHORT).show();
             }
         });
 

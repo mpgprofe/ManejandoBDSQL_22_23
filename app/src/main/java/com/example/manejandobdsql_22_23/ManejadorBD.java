@@ -72,4 +72,12 @@ public class ManejadorBD extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
+
+    public boolean borrar(String id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        int borradas = sqLiteDatabase.delete( TABLE_NAME,COL_ID+"=?",new String[]{id});
+        sqLiteDatabase.close();
+        return borradas>0;
+
+    }
 }
