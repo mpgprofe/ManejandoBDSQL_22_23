@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     });
+                }else{
+                    arrayAdapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, lista);
+                    listViewLista.setAdapter(arrayAdapter);
                 }
 
             }
@@ -96,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         buttonBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //Usando un alertDialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
 
@@ -112,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         boolean borrado = manejadorBD.borrar(editTextId.getText().toString());
                         Toast.makeText(MainActivity.this, borrado?"Borrado correctamente":"Nada a borrar", Toast.LENGTH_SHORT).show();
+                        buttonMostrar.callOnClick();
                     }
                 });
 
@@ -120,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 alert.setTitle("¡ ATENCIÓN !");
                 alert.show();
 
-
+                //Primera aproximación sin diálo de borrar.
                 //boolean borrado = manejadorBD.borrar(editTextId.getText().toString());
                 //Toast.makeText(MainActivity.this, borrado?"Borrado correctamente":"Nada a borrar", Toast.LENGTH_SHORT).show();
             }
