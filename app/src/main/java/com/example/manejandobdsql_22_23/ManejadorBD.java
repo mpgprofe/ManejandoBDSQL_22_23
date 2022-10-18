@@ -2,6 +2,7 @@ package com.example.manejandobdsql_22_23;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -44,6 +45,12 @@ public class ManejadorBD extends SQLiteOpenHelper {
         sqLiteDatabase.close(); //Cierro la BD
 
         return (resultado != -1); //en resultado está el número de filas afectadas
+    }
+
+    public Cursor listar(){
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_NAME, null);
+        return cursor;
     }
 
     @Override

@@ -110,4 +110,14 @@
         android:inputType="numberDecimal"
         app:layout_constraintStart_toStartOf="@+id/editTextMarca"
         app:layout_constraintTop_toBottomOf="@+id/editTextMarca" />
+
+    <ListView
+        android:id="@+id/listViewLista"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/fondolista"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPrecio" />
 </androidx.constraintlayout.widget.ConstraintLayout>
