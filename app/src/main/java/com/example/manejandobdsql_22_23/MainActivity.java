@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editTextId, editTextMarca, editTextModelo, editTextPrecio;
     Button buttonMostrar, buttonGuardar, buttonBorrar, buttonActualizar;
     ListView listViewLista;
+    ArrayList<Movil> moviles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,31 +55,56 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Cursor cursor = manejadorBD.listar();
-                ArrayList<Movil> moviles = new ArrayList<>();
-                ArrayAdapter <String> arrayAdapter;
+                moviles = new ArrayList<>();
+                ArrayAdapter<String> arrayAdapter;
                 List<String> lista = new ArrayList<>();
 
-                if (cursor!=null && cursor.getCount()>0){
-                    while (cursor.moveToNext()){
-                        String fila = "";
-                        fila+= "ID: "+cursor.getString(0);
-                        fila+= " Modelo: "+cursor.getString(1);
-                        fila+= " Marca: "+cursor.getString(2);
-                        fila+= " Precio: "+cursor.getString(3);
+                if (cursor != null && cursor.getCount() > 0) {
+                    while (cursor.moveToNext()) {
+                        Movil movil = new Movil(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+                        String fila = movil.toString();
                         lista.add(fila);
-                        moviles.add(new Movil(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3)));
+                        moviles.add(movil);
                     }
                     arrayAdapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, lista);
                     listViewLista.setAdapter(arrayAdapter);
+                    listViewLista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            editTextId.setText(moviles.get(i).getId());
+                            editTextModelo.setText(moviles.get(i).getModelo());
+                            editTextMarca.setText(moviles.get(i).getMarca());
+                            editTextPrecio.setText(moviles.get(i).getPrecio());
+
+                        }
+                    });
                 }
+
+            }
+        });
+        buttonActualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean resultado = manejadorBD.actualizar(editTextId.getText().toString(), editTextModelo.getText().toString(), editTextMarca.getText().toString(), editTextPrecio.getText().toString());
+                Toast.makeText(MainActivity.this, resultado?"Modificado correctamente":"No se ha modificado nada", Toast.LENGTH_SHORT).show();
 
             }
         });
 
     }
 
-    class Movil{
-        String id, modelo,marca, precio;
+    class Movil {
+        String id, modelo, marca, precio;
+
+        @Override
+        public String toString() {
+            return "Movil{" +
+                    "id='" + id + '\'' +
+                    ", modelo='" + modelo + '\'' +
+                    ", marca='" + marca + '\'' +
+                    ", precio='" + precio + '\'' +
+                    '}';
+        }
 
         public Movil(String id, String modelo, String marca, String precio) {
             this.id = id;

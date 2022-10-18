@@ -20,7 +20,8 @@ public class ManejadorBD extends SQLiteOpenHelper {
     public ManejadorBD(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
-    public ManejadorBD(Context context){
+
+    public ManejadorBD(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
 
@@ -47,10 +48,24 @@ public class ManejadorBD extends SQLiteOpenHelper {
         return (resultado != -1); //en resultado está el número de filas afectadas
     }
 
-    public Cursor listar(){
+    public Cursor listar() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_NAME, null);
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         return cursor;
+    }
+
+    public boolean actualizar(String id, String modelo, String marca, String precio) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_MODELO, modelo);
+        contentValues.put(COL_MARCA, marca);
+        contentValues.put(COL_PRECIO, precio);
+
+        long resultado = sqLiteDatabase.update(TABLE_NAME, contentValues, COL_ID + "=?", new String[]{id});
+        sqLiteDatabase.close();
+
+        return (resultado > 0);
+
     }
 
     @Override
